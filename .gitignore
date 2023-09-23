@@ -1,0 +1,4 @@
+.env*
+garbage.md
+*.zip
+*.exe

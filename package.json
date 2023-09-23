@@ -1,0 +1,16 @@
+{
+  "name": "go-medium-shapes",
+  "version": "1.0.0",
+  "description": "Golang - intermediate level",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "go run ./cmd",
+    "test": "go test -v ./test",
+    "build": "build.bat"
+  },
+  "author": "Cristian Acuña",
+  "license": "ISC"
+}
