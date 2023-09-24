@@ -35,7 +35,7 @@ func UploadTempFile(path string, fileName string) error {
 	defer file.Close()
 
 	bucketname := constants.BUCKET_NAME
-	key := constants.S3_DIRECTORY + fileName
+	key := constants.S3_DIRECTORY + "/" + fileName
 
 	s3Client := storage.NewS3Client()
 	err = s3Client.UploadFile(&bucketname, &key, file)
