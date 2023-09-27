@@ -8,7 +8,7 @@ type Response struct {
 	Body       string            `json:"body"`
 }
 
-func NewResponseOk(body string) (Response, error) { //TODO: verificar si es neceario retornar error
+func NewResponseOk(body string) (Response, error) {
 	return Response{
 		StatusCode: 200,
 		Headers:    map[string]string{"Content-Type": "application/json"},
@@ -16,7 +16,7 @@ func NewResponseOk(body string) (Response, error) { //TODO: verificar si es nece
 	}, nil
 }
 
-func NewResponseError(statusCode int, err string) (Response, error) { //TODO: verificar si es neceario retornar error
+func NewResponseError(statusCode int, err string) (Response, error) {
 	return Response{
 		StatusCode: statusCode,
 		Headers:    map[string]string{"Content-Type": "application/json"},
