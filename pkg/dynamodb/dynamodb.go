@@ -19,8 +19,11 @@ func NewDynamoDBClient() DynamoDBClient {
 }
 
 func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, error) {
-	service := credentials.GetClientDynamo()
 	shapes := []models.Item{}
+	service, err := credentials.GetClientDynamo()
+	if err != nil {
+		return shapes, fmt.Errorf("ListShapesByType. Error obteniendo credenciales de AWS. %s", err)
+	}
 
 	// Con la proyección obtengo el id, shapeType, a, b y creator de cada elemento recuperado. Impotante: name de la DB, no del modelo (por eso en minúscula)
 	proj := expression.NamesList(expression.Name("id"), expression.Name("shapeType"), expression.Name("a"), expression.Name("b"), expression.Name("creator"))
@@ -63,7 +66,10 @@ func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, erro
 }
 
 func (db DynamoDBClient) Create(id string, shapeType string, a float64, b float64, creator string) error {
-	service := credentials.GetClientDynamo()
+	service, err := credentials.GetClientDynamo()
+	if err != nil {
+		return fmt.Errorf("ListShapesByType. Error obteniendo credenciales de AWS. %s", err)
+	}
 	shape := models.Item{Id: id, ShapeType: shapeType, A: a, B: b, Creator: creator}
 
 	// Parseo cada ítems de Go Types a DynamoDB attributes values
