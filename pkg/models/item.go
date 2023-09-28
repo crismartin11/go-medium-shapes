@@ -10,10 +10,10 @@ const TRIANGLE string = "TRIANGLE"
 
 type Item struct {
 	Id        string  `json:"id"`
-	ShapeType string  `json:"shapeType"`
+	ShapeType string  `json:"tipo"`
 	A         float64 `json:"a"`
 	B         float64 `json:"b"`
-	Creator   string  `json:"creator"`
+	Creator   string  `json:"creador"`
 }
 
 func (i Item) IsValidShapeType() bool {

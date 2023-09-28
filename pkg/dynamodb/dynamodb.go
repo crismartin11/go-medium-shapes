@@ -25,12 +25,12 @@ func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, erro
 		return shapes, fmt.Errorf("ListShapesByType. Error obteniendo credenciales de AWS. %s", err)
 	}
 
-	// Con la proyección obtengo el id, shapeType, a, b y creator de cada elemento recuperado. Impotante: name de la DB, no del modelo (por eso en minúscula)
-	proj := expression.NamesList(expression.Name("id"), expression.Name("shapeType"), expression.Name("a"), expression.Name("b"), expression.Name("creator"))
+	// Con la proyección obtengo el id, tipo, a, b y creador de cada elemento recuperado. Impotante: name de la DB, no del modelo (por eso en minúscula)
+	proj := expression.NamesList(expression.Name("id"), expression.Name("tipo"), expression.Name("a"), expression.Name("b"), expression.Name("creador"))
 
 	// Creo la expresión
 	expr, err := expression.NewBuilder().WithFilter(
-		expression.Contains(expression.Name("shapeType"), shapeType),
+		expression.Contains(expression.Name("tipo"), shapeType),
 	).WithProjection(proj).Build()
 	if err != nil {
 		return shapes, fmt.Errorf("ListShapesByType. Error creando expression. %s", err)
