@@ -2,7 +2,7 @@
 cls
 echo :: Building project.
 
-set lambdaName="lambdaShapesCris"
+set lambdaName="goMediumShapes"
 
 set GOOS=linux
 set GOARCH=amd64
