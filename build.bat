@@ -5,7 +5,7 @@ echo :: Building project.
 set GOOS=linux
 set GOARCH=amd64
 set CGO_ENABLED=0
-go build -o cmd/main cmd/main.go
-%USERPROFILE%\Go\bin\build-lambda-zip.exe -o cmd/main.zip cmd/main
+go build -o build/main cmd/main.go
+%USERPROFILE%\Go\bin\build-lambda-zip.exe -o build/main.zip build/main
 
 echo :: Build finished.

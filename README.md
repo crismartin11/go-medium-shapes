@@ -9,3 +9,4 @@
 // Crear la función en aws
 // Subir el zip asociada a la función creada
 // Cambiar el nombre del handler en "Runtime settings" por main
+

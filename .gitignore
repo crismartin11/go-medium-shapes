@@ -2,3 +2,4 @@
 garbage.md
 *.zip
 *.exe
+/build
