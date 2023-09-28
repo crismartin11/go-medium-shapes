@@ -61,5 +61,5 @@ func getFileName(ctx context.Context, event models.Item) string {
 	if ok {
 		awsRequestID = lc.AwsRequestID
 	}
-	return event.ShapeType + "-" + awsRequestID + "-" + time.Now().Format(constants.DATE_FORMAT)
+	return event.ShapeType + "-" + awsRequestID + "-" + time.Now().Format(constants.DATE_FORMAT) + ".txt"
 }
