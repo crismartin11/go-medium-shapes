@@ -2,29 +2,45 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"go-medium-shapes/pkg/models"
+	"go-medium-shapes/pkg/validator"
 
 	"github.com/rs/zerolog/log"
 )
 
-type Handler struct{}
-
-func New() Handler {
-	return Handler{}
+type Processor interface {
+	ProcessCreation(request models.Request) (models.Response, error)
+	ProcessGeneration(ctx context.Context, request models.Request) (models.Response, error)
 }
 
-func (h Handler) Handle(ctc context.Context, event models.Item) (models.Response, error) {
+type Handler interface {
+	Handle(ctc context.Context, request models.Request) (models.Response, error)
+}
 
-	log.Info().Msg("Handle Shape started")
-	if !event.IsValidShapeType() {
-		log.Error().Msg("Handle Shape. Invalid shape type.")
-		return models.NewResponseError(400, fmt.Sprintf("ERROR: Tipo de figura %s inválido.", event.ShapeType))
+type GenerateFileHandler struct {
+	p Processor
+	v validator.Validator
+}
+
+func New(p Processor, v validator.Validator) Handler {
+	return &GenerateFileHandler{
+		p,
+		v,
+	}
+}
+
+func (h GenerateFileHandler) Handle(ctx context.Context, request models.Request) (models.Response, error) {
+
+	log.Info().Msg("Handle started")
+	err := h.v.ValidateRequest(request)
+	if err != nil {
+		log.Error().Msg("Handle. Error in ValidateRequest.")
+		return models.NewResponseError(400, err.Error())
 	}
 
-	if event.IsValidData() {
-		return HandlerCreateShape(ctc, event)
+	if request.IsValidData() {
+		return h.p.ProcessCreation(request)
 	}
 
-	return HandlerGenerateFile(ctc, event)
+	return h.p.ProcessGeneration(ctx, request)
 }

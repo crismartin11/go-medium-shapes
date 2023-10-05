@@ -1,4 +1,4 @@
-package dynamodb
+package repository
 
 import (
 	"fmt"
@@ -10,20 +10,28 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
+	"github.com/rs/zerolog/log"
 )
 
-type DynamoDBClient struct{}
-
-func NewDynamoDBClient() DynamoDBClient {
-	return DynamoDBClient{}
+type Repository struct {
+	service *dynamodb.DynamoDB
 }
 
-func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, error) {
-	shapes := []models.Item{}
+func New() Repository {
+
+	log.Info().Msg("New Repository. Getting credentials.")
 	service, err := credentials.GetClientDynamo()
 	if err != nil {
-		return shapes, fmt.Errorf("ListShapesByType. Error obteniendo credenciales de AWS. %s", err)
+		log.Fatal().Msg("Error creating repository." + err.Error())
 	}
+
+	return Repository{
+		service: service,
+	}
+}
+
+func (r Repository) ListShapesByType(shapeType string) ([]models.Request, error) {
+	shapes := []models.Request{}
 
 	// Con la proyección obtengo el id, tipo, a, b y creador de cada elemento recuperado. Impotante: name de la DB, no del modelo (por eso en minúscula)
 	proj := expression.NamesList(expression.Name("id"), expression.Name("tipo"), expression.Name("a"), expression.Name("b"), expression.Name("creador"))
@@ -46,14 +54,14 @@ func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, erro
 	}
 
 	// Invoco DynamoDB Query API
-	result, err := service.Scan(params)
+	result, err := r.service.Scan(params)
 	if err != nil {
 		return shapes, fmt.Errorf("ListShapesByType. Error al invocar API Query. %s", err)
 	}
 
 	// Recorro los items obtenidos
 	for _, i := range result.Items {
-		shape := models.Item{}
+		shape := models.Request{}
 
 		err = dynamodbattribute.UnmarshalMap(i, &shape) // Parseo y almaceno en user
 		if err != nil {
@@ -65,12 +73,8 @@ func (db DynamoDBClient) ListShapesByType(shapeType string) ([]models.Item, erro
 	return shapes, nil
 }
 
-func (db DynamoDBClient) Create(id string, shapeType string, a float64, b float64, creator string) error {
-	service, err := credentials.GetClientDynamo()
-	if err != nil {
-		return fmt.Errorf("ListShapesByType. Error obteniendo credenciales de AWS. %s", err)
-	}
-	shape := models.Item{Id: id, ShapeType: shapeType, A: a, B: b, Creator: creator}
+func (r Repository) CreateShape(id string, shapeType string, a float64, b float64, creator string) error {
+	shape := models.Request{Id: id, ShapeType: shapeType, A: a, B: b, Creator: creator}
 
 	// Parseo cada ítems de Go Types a DynamoDB attributes values
 	sh, err := dynamodbattribute.MarshalMap(shape)
@@ -85,7 +89,7 @@ func (db DynamoDBClient) Create(id string, shapeType string, a float64, b float6
 	}
 
 	// Inserto
-	_, err = service.PutItem(input)
+	_, err = r.service.PutItem(input)
 	if err != nil {
 		return fmt.Errorf("Create. Error insertando figura (%s). %s", id, err)
 	}

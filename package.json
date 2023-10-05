@@ -8,8 +8,11 @@
   },
   "scripts": {
     "start": "go run ./cmd",
-    "test": "go test -v ./test",
-    "build": "build.bat"
+    "build": "build.bat",
+    "test credentials": "go test -v ./test/credentials_test.go",
+    "test file": "go test -v ./test/file_test.go",
+    "test handler": "go test -v ./test/handler_test.go",
+    "test repository": "go test -v ./test/repository_test.go"
   },
   "author": "Cristian Acuña",
   "license": "ISC"
