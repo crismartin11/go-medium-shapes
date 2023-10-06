@@ -3,7 +3,6 @@ cls
 echo :: Building project.
 
 set lambdaName="goMediumShapes"
-::set lambdaName="lambdaShapes"
 set directory="package"
 
 set GOOS=linux

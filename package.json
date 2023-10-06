@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "go run ./cmd",
-    "build": "build.bat",
+    "build windows": "buildWindows.bat",
+    "build mac": "./buildMac.bat",
     "test credentials": "go test -v ./test/credentials_test.go",
     "test file": "go test -v ./test/file_test.go",
     "test handler": "go test -v ./test/handler_test.go",
