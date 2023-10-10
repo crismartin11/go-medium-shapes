@@ -59,8 +59,6 @@ func (p Processor) ProcessCreation(request models.Request) (models.Response, err
 	return models.NewResponseOk("Creation process successful!")
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 func (p Processor) ProcessGeneration(ctx context.Context, request models.Request) (models.Response, error) {
 	log.Info().Msg("ProcessGeneration. Generate shape list file handler started.")
 

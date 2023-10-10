@@ -13,24 +13,6 @@ func getSession() (*session.Session, error) {
 	return session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	})), nil
-
-	/*aws_access_key_id := os.Getenv("AWS_ACCESS_KEY_ID")
-	aws_secret_access_key := os.Getenv("AWS_SECRET_ACCESS_KEY")
-	aws_default_region := os.Getenv("AWS_DEFAULT_REGION")
-
-	creds := credentials.NewStaticCredentials(aws_access_key_id, aws_secret_access_key, "")
-	_, err := creds.Get()
-	if err != nil {
-		//fmt.Println(err)
-		//os.Exit(1)
-		return nil, err
-	}
-	fmt.Println("SSSS")
-	session, err := session.NewSession(&aws.Config{
-		Region:      aws.String(aws_default_region),
-		Credentials: creds,
-	})
-	return session, err*/
 }
 
 func GetClientS3() (*s3.S3, error) {
