@@ -12,11 +12,10 @@ import (
 )
 
 func main() {
-
-	r := repository.New()
+	d := repository.NewDynamoDB()
 	s3r := repository.NewS3Repository()
 	us := services.NewUserDataService(&http.Client{})
-	p := processor.New(r, s3r, us)
+	p := processor.New(d, s3r, us)
 	v := validator.NewItemValidator()
 	h := handler.New(p, v)
 

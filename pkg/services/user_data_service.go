@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-medium-shapes/pkg/constants"
+	"go-medium-shapes/pkg/models"
 	"io"
 	"net/http"
 )
@@ -17,13 +18,7 @@ type UserDataService struct {
 }
 
 type IUserDataService interface {
-	GetUserData(id string) (UserDataResponse, error)
-}
-
-type UserDataResponse struct { // TODO: pasar a models
-	Data struct {
-		Email string `json:"email"`
-	}
+	GetUserData(id string) (models.UserDataResponse, error)
 }
 
 func NewUserDataService(client HttpClient) IUserDataService {
@@ -32,9 +27,9 @@ func NewUserDataService(client HttpClient) IUserDataService {
 	}
 }
 
-func (us UserDataService) GetUserData(id string) (UserDataResponse, error) {
+func (us UserDataService) GetUserData(id string) (models.UserDataResponse, error) {
 
-	var userData UserDataResponse
+	var userData models.UserDataResponse
 
 	url := constants.URL_API_USERS + id
 
